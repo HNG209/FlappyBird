@@ -41,7 +41,7 @@ int main() {
 	r.setPosition(sf::Vector2f(window.getSize().x / 2.f, 600.f));
 	int jumping = false;
 	const float base_velocity = 400.f;
-	const float base_G = -981.f;
+	const float base_G = -2000.f;//-981.f;
 	float vel = base_velocity;
 	float G = base_G;
 	//float jumpHeight = 100.f;

@@ -36,12 +36,12 @@ private:
 	sf::RenderWindow* window; 
 	const std::string path = "Assets\\Collider\\pipes.png";
 	sf::Texture Pipe_texture;
-	const float pipes_spacing = 300.f;
+	const float pipes_spacing = 200.f;
 	const float pipes_spacing_min = 100.f;
 	const float pipes_spacing_width = 400.f;
 	const float minimum_pipe_height = 300.f;
 	const float speed = 150.f;
-	const float animation_speed = 290.f;
+	const float animation_speed = 350.f;
 	std::deque<_Pipe> pipes;
 	std::deque<_Pipe> animation;
 	float dt;

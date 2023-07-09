@@ -63,7 +63,7 @@ void Pipes::generate(float dt) {
 		this->animation.back().hitbox.second.top -= k;
 	}
 	this->gen_dt += dt;
-	if (gen_dt >= 2.f) gen_dt = 0.f;
+	if (gen_dt >= 1.f) gen_dt = 0.f;
 }
 
 bool Pipes::check_collisions(const sf::IntRect& other) {
