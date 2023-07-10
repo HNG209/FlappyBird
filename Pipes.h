@@ -5,6 +5,7 @@
 #include<iostream>
 #include<ctime>
 #include<random>
+#include"Star.h"
 
 #define Rand(a, b) a + (rand() % b)
 struct _Pipe {
@@ -36,20 +37,22 @@ private:
 	sf::RenderWindow* window; 
 	const std::string path = "Assets\\Collider\\pipes.png";
 	sf::Texture Pipe_texture;
-	const float pipes_spacing = 200.f;
+	float pipes_spacing = 300.f;//pipe spacing(Base = 300)
 	const float pipes_spacing_min = 100.f;
-	const float pipes_spacing_width = 400.f;
-	const float minimum_pipe_height = 300.f;
-	const float speed = 150.f;
-	const float animation_speed = 350.f;
+	float pipes_spacing_width = 400.f;
+	const float minimum_pipe_height = 300.f;//minimum height to generate
+	float speed = 150.f;//moving speed(Base = 150)
+	float animation_speed = 350.f;//pipe's grown speed(Base = 350)
 	std::deque<_Pipe> pipes;
 	std::deque<_Pipe> animation;
+	Star* star;
 	float dt;
 	float gen_dt;
 	float wait_time;
 	int last_score;
 	int index{};
 	int j = 0;
+	bool star_hit{};
 	void scale(float);
 public:
 	Pipes(sf::RenderWindow*);
@@ -60,6 +63,7 @@ public:
 	void reset();
 	bool check();
 	void animate(float);
+	bool check_star_hit(const sf::IntRect&);
 #if _DEBUG
 	void show_hitboxes() {
 		for (auto& i : animation)

@@ -19,6 +19,7 @@ void SFX::set_volume(float v) {
 	this->jump_sound.setVolume(v);
 	this->hit_sound.setVolume(v);
 	this->point_sound.setVolume(v);
+	this->die_sound.setVolume(v);
 }
 
 void SFX::play_flap_sound() {

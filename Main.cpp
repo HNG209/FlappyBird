@@ -33,7 +33,7 @@ int main() {
 	txt.setPosition(10.f, 0.f);
 	txt.setOutlineThickness(1.f);
 	txt.setOutlineColor(sf::Color::Black);
-	sfx.set_volume(40.f);
+	sfx.set_volume(10.f);
 	sf::RectangleShape r;
 	r.setFillColor(sf::Color::Blue);
 	r.setSize(sf::Vector2f(50.f, 50.f));
@@ -41,7 +41,7 @@ int main() {
 	r.setPosition(sf::Vector2f(window.getSize().x / 2.f, 600.f));
 	int jumping = false;
 	const float base_velocity = 400.f;
-	const float base_G = -2000.f;//-981.f;
+	const float base_G = -981.f;
 	float vel = base_velocity;
 	float G = base_G;
 	//float jumpHeight = 100.f;
@@ -104,6 +104,9 @@ int main() {
 		bg.draw();//Background
 		pipes.animate(dt);
 		pipes.draw();//pipe
+		if (pipes.check_star_hit(player.hitbox)) {
+			G = -2000.f;
+		}
 		gnd.draw();//ground
 		player.draw();//bird
 		player.update(dt);//update

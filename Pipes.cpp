@@ -61,29 +61,52 @@ void Pipes::generate(float dt) {
 		this->animation.back().pipe.second.move(0.f, -k);
 		this->animation.back().hitbox.first.top += k;
 		this->animation.back().hitbox.second.top -= k;
+		if (Rand(0, 100) > 50 && star == nullptr) {
+			star = new Star(this->window);
+			star->set_speed(speed);
+			star->set_postition(sf::Vector2f(pipes.back().pipe.first.getPosition().x + 10, pipes.back().pipe.first.getPosition().y - 200.f));
+		}
 	}
 	this->gen_dt += dt;
 	if (gen_dt >= 1.f) gen_dt = 0.f;
 }
 
 bool Pipes::check_collisions(const sf::IntRect& other) {
-	for (auto& i : pipes) {
-		//if (i.check_collision(other)) return true;
+	if (!star_hit) {
+		for (auto& i : pipes) {
+			if (i.check_collision(other)) return true;
+		}
 	}
-	for (auto& i : animation) {
-		if (i.check_collision(other)) return true;
+	else {
+		for (auto& i : animation) {
+			if (i.check_collision(other)) return true;
+		}
 	}
 	return false;
 }
 
 void Pipes::draw() {
-	for (const auto& i : animation) {
-		window->draw(i.pipe.first);//down
-		window->draw(i.pipe.second);//up
+	if (star != nullptr) {
+		star->animate();
+		star->draw();
+	}
+	if (!star_hit) {
+		for (const auto& i : pipes) {
+			window->draw(i.pipe.first);//down
+			window->draw(i.pipe.second);//up
+		}
+	}
+	else {
+		for (const auto& i : animation) {
+			window->draw(i.pipe.first);//down
+			window->draw(i.pipe.second);//up
+		}
 	}
 }
 
 void Pipes::reset() {
+	delete star;
+	star = nullptr;
 	this->pipes.clear();
 	this->animation.clear();
 	this->last_score = 0;
@@ -151,7 +174,25 @@ bool Pipes::check() {
 	return false;
 }
 
+bool Pipes::check_star_hit(const sf::IntRect& r) {
+	if(star != nullptr)
+		if (star->check_collision(r)) {
+			star_hit = true;
+		}
+	if (star_hit) {
+		delete star;
+		star = nullptr;
+		pipes_spacing = 200.f;
+		speed = 200.f;
+		animation_speed = 400.f;
+		pipes_spacing_width = 350.f;
+	}
+	return star_hit;
+}
+
 void Pipes::update(float dt) {
+	if(star != nullptr)
+		star->update(dt);
 	if (!pipes.empty()) {
 		if (pipes.front().pipe.first.getPosition().x < -100.f) {
 			pipes.pop_front();
