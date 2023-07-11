@@ -42,7 +42,7 @@ private:
 	float pipes_spacing_width = 400.f;
 	const float minimum_pipe_height = 300.f;//minimum height to generate
 	float speed = 150.f;//moving speed(Base = 150)
-	float animation_speed = 350.f;//pipe's grown speed(Base = 350)
+	float animation_speed = 400.f;//pipe's grown speed(Base = 350)
 	std::deque<_Pipe> pipes;
 	std::deque<_Pipe> animation;
 	Star* star;

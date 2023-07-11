@@ -13,6 +13,9 @@ SFX::SFX() {
 	if (!die_buffer.loadFromFile(die_path))
 		throw std::runtime_error("cannot load sound effect!");
 	die_sound.setBuffer(die_buffer);
+	if (!powerup_buffer.loadFromFile(powerup_path))
+		throw std::runtime_error("cannot load sound effect!");
+	powerup_sound.setBuffer(powerup_buffer);
 }
 
 void SFX::set_volume(float v) {
@@ -33,6 +36,11 @@ void SFX::play_hit_sound() {
 void SFX::play_point_sound() {
 	this->point_sound.play();
 }
+
 void SFX::play_die_sound() {
 	this->die_sound.play();
+}
+
+void SFX::play_powerup_sound() {
+	this->powerup_sound.play();
 }
