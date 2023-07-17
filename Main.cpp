@@ -9,7 +9,7 @@
 #include"Ground.h"
 #include"Pipes.h"
 #include"SFX.h"
-
+#include"Text.h"
 
 int main() {
 	sf::RenderWindow window(sf::VideoMode(576, 1024), "Flappy Bird", sf::Style::Default);
@@ -49,6 +49,7 @@ int main() {
 	bool lose = false;
 	bool play_once = false;
 	float delay{};
+	Text t(&window);
 	while (window.isOpen()) {
 		//-----------------------window events-----------------------
 		sf::Event ev;
@@ -106,6 +107,11 @@ int main() {
 		pipes.draw();//pipe
 		if (pipes.check_star_hit(player.hitbox)) {
 			G = -2000.f;
+			t.print("TAP HARDER!", sf::Vector2f(576.f / 2.f, 300.f), 40, dt);
+		}
+		else {
+			t.reset();
+			G = base_G;
 		}
 		gnd.draw();//ground
 		player.draw();//bird

@@ -49,6 +49,7 @@ private:
 	float dt;
 	float gen_dt;
 	float wait_time;
+	float active_time;
 	int last_score;
 	int index{};
 	int j = 0;

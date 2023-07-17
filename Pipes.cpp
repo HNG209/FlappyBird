@@ -24,53 +24,62 @@ void Pipes::generate(float dt) {
 		last_pipe = pipes.back();
 	//if (gen_dt == 0.f) {
 	if (!this->pipes.empty()) {
-		if (this->pipes.back().pipe.first.getPosition().x < 540.f) {
-			this->pipes.push_back({});
-			//calibrate if needed
-			int h = Rand(100, 400);
-			scale(4.f);
-			pipes.back().pipe.first.setTexture(Pipe_texture);
-			pipes.back().pipe.first.setPosition(last_pipe.pipe.first.getPosition().x + pipes_spacing, h);
-			pipes.back().pipe.first.move(0, pipes_spacing_width);
-			pipes.back().pipe.first.setTextureRect(sf::IntRect(
-				84.5f,//left
-				0.f,//top
-				26.5,//width
-				160.f//heigth
-			));
-			//pipes.back().hitbox.first.left = pipes.back().pipe.first.getPosition().x;
-			pipes.back().hitbox.first.left = last_pipe.hitbox.first.left + pipes_spacing;
-			pipes.back().hitbox.first.top = pipes.back().pipe.first.getPosition().y;
-			pipes.back().hitbox.first.height = pipes.back().pipe.first.getGlobalBounds().height;
-			pipes.back().hitbox.first.width = pipes.back().pipe.first.getGlobalBounds().width;
-			//pipes.back().pipe.first.setOrigin(0, 160.f);
-			pipes.back().pipe.second.setTexture(Pipe_texture);
-			pipes.back().pipe.second.setPosition(last_pipe.pipe.second.getPosition().x + pipes_spacing, h - 1024.f + 500.f);
-			pipes.back().pipe.second.setTextureRect(sf::IntRect(
-				56.f,
-				0.f,
-				26.5,
-				160.f
-			));
-			//pipes.back().hitbox.second.left = pipes.back().pipe.second.getPosition().x;
-			pipes.back().hitbox.second.left = last_pipe.hitbox.second.left + pipes_spacing;
-			pipes.back().hitbox.second.top = pipes.back().pipe.second.getPosition().y;
-			pipes.back().hitbox.second.height = pipes.back().pipe.second.getGlobalBounds().height;
-			pipes.back().hitbox.second.width = pipes.back().pipe.second.getGlobalBounds().width;
-			this->animation.push_back(pipes.back());
-			float k = pipes.back().pipe.first.getGlobalBounds().height;
-			this->animation.back().pipe.first.move(0.f, k);
-			this->animation.back().pipe.second.move(0.f, -k);
-			this->animation.back().hitbox.first.top += k;
-			this->animation.back().hitbox.second.top -= k;
-			if (Rand(0, 100) > 50 && star == nullptr) {
-				star = new Star(this->window);
-				star->set_speed(speed);
-				star->set_postition(sf::Vector2f(pipes.back().pipe.first.getPosition().x + 10, pipes.back().pipe.first.getPosition().y - 200.f));
+		if (active_time <= 5.f) {
+			if (this->pipes.back().pipe.first.getPosition().x < 540.f) {
+				this->pipes.push_back({});
+				//calibrate if needed
+				int h = Rand(100, 400);
+				scale(4.f);
+				pipes.back().pipe.first.setTexture(Pipe_texture);
+				pipes.back().pipe.first.setPosition(last_pipe.pipe.first.getPosition().x + pipes_spacing, h);
+				pipes.back().pipe.first.move(0, pipes_spacing_width);
+				pipes.back().pipe.first.setTextureRect(sf::IntRect(
+					84.5f,//left
+					0.f,//top
+					26.5,//width
+					160.f//heigth
+				));
+				//pipes.back().hitbox.first.left = pipes.back().pipe.first.getPosition().x;
+				pipes.back().hitbox.first.left = last_pipe.hitbox.first.left + pipes_spacing;
+				pipes.back().hitbox.first.top = pipes.back().pipe.first.getPosition().y;
+				pipes.back().hitbox.first.height = pipes.back().pipe.first.getGlobalBounds().height;
+				pipes.back().hitbox.first.width = pipes.back().pipe.first.getGlobalBounds().width;
+				//pipes.back().pipe.first.setOrigin(0, 160.f);
+				pipes.back().pipe.second.setTexture(Pipe_texture);
+				pipes.back().pipe.second.setPosition(last_pipe.pipe.second.getPosition().x + pipes_spacing, h - 1024.f + 500.f);
+				pipes.back().pipe.second.setTextureRect(sf::IntRect(
+					56.f,
+					0.f,
+					26.5,
+					160.f
+				));
+				//pipes.back().hitbox.second.left = pipes.back().pipe.second.getPosition().x;
+				pipes.back().hitbox.second.left = last_pipe.hitbox.second.left + pipes_spacing;
+				pipes.back().hitbox.second.top = pipes.back().pipe.second.getPosition().y;
+				pipes.back().hitbox.second.height = pipes.back().pipe.second.getGlobalBounds().height;
+				pipes.back().hitbox.second.width = pipes.back().pipe.second.getGlobalBounds().width;
+				this->animation.push_back(pipes.back());
+				float k = pipes.back().pipe.first.getGlobalBounds().height;
+				this->animation.back().pipe.first.move(0.f, k);
+				this->animation.back().pipe.second.move(0.f, -k);
+				this->animation.back().hitbox.first.top += k;
+				this->animation.back().hitbox.second.top -= k;
+				if (Rand(0, 100) > 50 && star == nullptr) {
+					star = new Star(this->window);
+					star->set_speed(speed);
+					star->set_postition(sf::Vector2f(pipes.back().pipe.first.getPosition().x + 10, pipes.back().pipe.first.getPosition().y - 200.f));
+				}
 			}
 		}
 	}
 	else {
+		delete star;
+		star = nullptr;
+		pipes_spacing = 300.f;
+		speed = 150.f;
+		pipes_spacing_width = 400.f;
+		active_time = 0.f;
+		star_hit = false;
 		this->pipes.push_back({});
 		//calibrate if needed
 		int h = Rand(100, 400);
@@ -150,6 +159,7 @@ void Pipes::reset() {
 	pipes_spacing = 300.f;
 	speed = 150.f;
 	pipes_spacing_width = 400.f;
+	active_time = 0.f;
 	star_hit = false;
 	this->pipes.clear();
 	this->animation.clear();
@@ -201,11 +211,11 @@ void Pipes::animate(float dt) {
 		}
 	}
 	if (j < animation.size()) {
-		if (animation[j].pipe.second.getPosition().x < window->getSize().x - 200.f) {
+		if (animation[j].pipe.second.getPosition().x < window->getSize().x - 200.f)
 			j++;
-			if (j >= animation.size()) j = 0;
-		}
 	}
+	if(star_hit)
+		active_time += dt;
 }
 
 bool Pipes::check() {
