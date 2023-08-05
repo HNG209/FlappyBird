@@ -50,20 +50,30 @@ private:
 	float gen_dt;
 	float wait_time;
 	float active_time;
+	float fade_dt;
 	int last_score;
 	int index{};
 	int j = 0;
+	int tint = 255;
+	bool gen_star{};
 	bool star_hit{};
+	bool hidden{};
 	void scale(float);
 public:
 	Pipes(sf::RenderWindow*);
-	void update(float);
+
 	void draw();
-	void generate(float);
-	bool check_collisions(const sf::IntRect&);
 	void reset();
-	bool check();
+	void set_star_gen();
+	void update(float);
+	void generate(float);
 	void animate(float);
+	void hide(bool);
+public:
+	bool check();
+	bool is_star_hit();
+	bool check_star_gen();
+	bool check_collisions(const sf::IntRect&);
 	bool check_star_hit(const sf::IntRect&);
 #if _DEBUG
 	void show_hitboxes() {

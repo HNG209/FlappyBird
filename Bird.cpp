@@ -21,6 +21,16 @@ void Bird::draw() {
 	window->draw(bird);
 }
 
+void Bird::move(float x, float y)
+{
+	bird.move(x, y);
+}
+
+sf::Sprite Bird::get_sprite() const
+{
+	return bird;
+}
+
 void Bird::show_hitbox() {
 	sf::RectangleShape r;
 	r.setFillColor(sf::Color(0, 0, 255, 100));
@@ -29,6 +39,10 @@ void Bird::show_hitbox() {
 	window->draw(r);
 }
 
+void Bird::set_rotation(float angle)
+{
+	bird.setRotation(angle);
+}
 
 void Bird::update(float dt) {
 	this->dt += dt;

@@ -19,7 +19,10 @@ public:
 	void operator=(const sf::RectangleShape&);
 	void update(float);
 	void show_hitbox();
+	void set_rotation(float);
+	void move(float, float);
 	void draw();
+	sf::Sprite get_sprite() const;
 	inline float _map(float value, float value_min, float value_max, float rangeL, float rangeH) {
 		return value * (rangeH - rangeL) / (value_max - value_min) + rangeL;
 	}
